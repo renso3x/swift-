@@ -225,6 +225,191 @@ filtered
 let reduced = elements.reduce(0) { (sum, number) in return sum + number }
 reduced
 
+// Recursive Binary Tree
+
+/*
+        10
+       /   \
+      5    14
+     /     / \
+    1     11   20
+
+ */
+
+class Node {
+    var value: Int
+    var left: Node?
+    var right: Node?
+
+    init (value: Int, left: Node?, right: Node?) {
+        self.value = value
+        self.left = left
+        self.right = right
+    }
+}
+
+//left branch
+var one = Node(value: 1, left: nil, right: nil)
+var five = Node(value: 5, left: one, right: nil)
+
+//right branch
+var eleven = Node(value: 11, left: nil, right: nil)
+var twenty = Node(value: 20, left: nil, right: nil)
+var fourteen = Node(value: 14, left: eleven, right: twenty)
+
+//top branch
+var top = Node(value: 10, left: five, right: fourteen)
+
+
+func searchNode(find: Node?, searchValue: Int) -> Bool {
+    if find == nil {
+        return false
+    }
+
+    if find?.value == searchValue {
+        return true
+    } else if searchValue < find!.value {
+        return searchNode(find: find?.left, searchValue: searchValue)
+    } else {
+        return searchNode(find: find?.right, searchValue: searchValue)
+    }
+}
+
+searchNode(find: top, searchValue: 11)
+
+// Date
+
+let dateDisplay = Date(timeIntervalSinceNow: -60 * 60 * 24)
+
+extension Date {
+    func displayTimeAgo() -> String {
+        let seconds = Int(Date().timeIntervalSince(self))
+
+        let minutes = 60
+        let hours = 60 * minutes
+        let days = 24 * hours
+        let weeks = days * 7
+
+        if seconds < minutes {
+            return "\(seconds) seconds ago"
+        } else if seconds < hours {
+            return "\(seconds / minutes) minutes ago"
+        } else if seconds < days {
+            return "\(seconds / hours ) hours ago"
+        } else if seconds < weeks {
+            return "\(seconds / days) days ago"
+        }
+        return "\(seconds / weeks) weeks ago"
+    }
+}
+
+dateDisplay.displayTimeAgo()
+
+
+// largest palindrome
+
+let sentence = "madam anna kayak notaplindrome anna Civic racecar"
+
+func findPalindrome(word: String) -> Bool {
+    let characters = Array(word)
+    var currentIndex = 0
+
+    while currentIndex < characters.count / 2 {
+
+//        print ("current Index: \(characters[currentIndex])")
+//        print ("middle index: \(characters[characters.count - currentIndex - 1])")
+        if characters[currentIndex] != characters[characters.count - currentIndex - 1] {
+            return false
+        }
+        currentIndex += 1
+    }
+    return true
+}
+
+let words = sentence.components(separatedBy: " ")
+var palindroms = [String: Int]()
+words.forEach { (word) in
+    if findPalindrome(word: word) {
+        let count = palindroms[word] ?? 0
+        palindroms[word] = count + 1
+    }
+}
+
+print (palindroms)
+
+// creating a closure
+
+func transformString(closure: (String) -> String, value: String) -> String {
+    return closure(value)
+}
+
+func transformUpperCase(string: String) -> String {
+    return string.uppercased()
+}
+
+let transformClosure = transformString(closure: transformUpperCase,value: "romeo enso");
+
+print (transformClosure)
+
+func numberRolls(task: (Int) -> Int, collection: [Int]) -> [Int] {
+    var nums = [Int]()
+
+    for num in collection {
+        nums.append(task(num))
+    }
+    return nums
+}
+
+func plusTwo(values: Int) -> Int {
+    return values + 2
+}
+
+func multiplByTwo(values: Int) -> Int {
+    return values * 2
+}
+
+let transformNumberRolls = numberRolls(task: multiplByTwo, collection: [1,2,3,4,5])
+
+print (transformNumberRolls)
+
+// Flattening Nested Arrays using Recursion
+
+// [1, 2] -> [1, 2]
+// [1, [2]] -> [1, 2]
+// [1, 2,[3,4]] -> [1,2,3,4]
+
+func flattenArray(nums: [Any]) -> [Int] {
+
+    var myFlattenArr = [Int]()
+
+    for num in nums {
+        if num is Int {
+            myFlattenArr.append(num as! Int)
+        } else if num is [Any] {
+
+            let recursionResult = flattenArray(nums: num as! [Any])
+
+            for result in recursionResult {
+                myFlattenArr.append(result)
+            }
+        }
+    }
+
+    return myFlattenArr
+}
+
+let flatArray = flattenArray(nums: [1,2, [3, 4, [5]]])
+
+print (flatArray)
+
+
+
+
+
+
+
+
+
 
 
 
